@@ -7,26 +7,32 @@ type State struct {
 	Data schema.Person
 }
 
-type StatefulComponent struct {
+type StatefulComponent interface {
+	Dispatch(event schema.Event)
+	AddListener(listener func(schema.Event))
+	GetState() State
+}
+
+type statefulComponent struct {
 	state     State
 	listeners []func(schema.Event)
 }
 
-func NewStatefulComponent() *StatefulComponent {
-	return &StatefulComponent{}
+func NewStatefulComponent() StatefulComponent {
+	return &statefulComponent{}
 }
 
-func (s *StatefulComponent) Dispatch(event schema.Event) {
+func (s *statefulComponent) Dispatch(event schema.Event) {
 	s.state = State{Name: event.Name, Data: event.Data}
 	for _, listener := range s.listeners {
 		listener(event)
 	}
 }
 
-func (s *StatefulComponent) AddListener(listener func(schema.Event)) {
+func (s *statefulComponent) AddListener(listener func(schema.Event)) {
 	s.listeners = append(s.listeners, listener)
 }
 
-func (s *StatefulComponent) GetState() State {
+func (s *statefulComponent) GetState() State {
 	return s.state
 }
