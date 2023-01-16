@@ -11,6 +11,7 @@ type StatefulComponent interface {
 	Dispatch(event schema.Event)
 	AddListener(listener func(schema.Event))
 	GetState() State
+	GetListeners() []func(schema.Event)
 }
 
 type statefulComponent struct {
@@ -35,4 +36,8 @@ func (s *statefulComponent) AddListener(listener func(schema.Event)) {
 
 func (s *statefulComponent) GetState() State {
 	return s.state
+}
+
+func (s *statefulComponent) GetListeners() []func(schema.Event) {
+	return s.listeners
 }
