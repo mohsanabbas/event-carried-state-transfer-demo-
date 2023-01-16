@@ -21,6 +21,8 @@
 # Visual Studio Code
 .vscode/
 
+.idea/
+
 # Go build artifacts
 *.6
 *.a
