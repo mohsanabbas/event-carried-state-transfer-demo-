@@ -1,5 +1,8 @@
 # Event-Carried State Transfer (ECST) pattern
 
+### [Check this blog post on the topic](https://itnext.io/the-event-carried-state-transfer-pattern-aae49715bb7f)
+
+
 The code provided implements the Event-Carried State Transfer (ECST) pattern. ECST is a design pattern for managing state in a distributed system.
 
 ECST is based on the idea that state changes in the system should be triggered by events, and that these events should be broadcasted to all interested parties. This ensures that all parts of the system are aware of the current state, and can react accordingly.
