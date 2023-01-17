@@ -6,7 +6,8 @@ ECST is based on the idea that state changes in the system should be triggered b
 
 The `StatefulComponent` struct in the `state` package is the main component that implements the ECST pattern. 
 It has a `state` field that holds the current state of the component, and a `listeners` field that holds a slice of functions that are interested in receiving events. 
-The `AddListener` function can be used to register a new listener, and the `Dispatch` function can be used to dispatch an event to all registered listeners.
+The `AddListener` function can be used to register a new listener, and the `Dispatch` function can be used to dispatch an event to the `events` channel.
+The `handleEvents` function listens for events on the events channel and updates the state. It also calls all the registered listeners with the event.
 The `GetState` function can be used to get the current state of the component.
 
 The Event struct is used to represent an event in the system. It has a Name field that holds the name of the event, and a Data field that holds the data associated with the event. The Person struct is an example of the data that can be associated with an event.
@@ -27,7 +28,8 @@ This pattern can be useful in systems where state changes need to be propagated 
 - Import the packages' `schema`, `state` and `conversion
 - Create a new instance of `StatefulComponent`
 - Register listeners to the component using the `AddListener` function
-- Dispatch events to the component using the `Dispatch` function
+- Dispatch events to the channel using the `Dispatch` function
+- `handleEvents` function listens for events on the events channel and updates the state. It also calls all the registered listeners with the event.
 - Get the current state of the component using the `GetState` function
 - Use the `MarshalIndent` function to convert the state struct to json string
 
