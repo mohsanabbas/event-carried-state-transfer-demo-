@@ -17,17 +17,21 @@ type StatefulComponent interface {
 type statefulComponent struct {
 	state     State
 	listeners []func(schema.Event)
+	events    chan schema.Event
 }
 
 func NewStatefulComponent() StatefulComponent {
-	return &statefulComponent{}
+
+	component := &statefulComponent{
+		events: make(chan schema.Event),
+	}
+	go component.handleEvents()
+	return component
 }
 
 func (s *statefulComponent) Dispatch(event schema.Event) {
-	s.state = State{Name: event.Name, Data: event.Data}
-	for _, listener := range s.listeners {
-		listener(event)
-	}
+
+	s.events <- event
 }
 
 func (s *statefulComponent) AddListener(listener func(schema.Event)) {
@@ -40,4 +44,14 @@ func (s *statefulComponent) GetState() State {
 
 func (s *statefulComponent) GetListeners() []func(schema.Event) {
 	return s.listeners
+}
+
+func (s *statefulComponent) handleEvents() {
+	defer close(s.events)
+	for event := range s.events {
+		s.state = State{Name: event.Name, Data: event.Data}
+		for _, listener := range s.listeners {
+			listener(event)
+		}
+	}
 }

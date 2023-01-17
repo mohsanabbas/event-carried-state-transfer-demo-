@@ -13,7 +13,7 @@ func main() {
 
 	// Register a listener
 	component.AddListener(func(event schema.Event) {
-		fmt.Println("Event received:", event.Name)
+		fmt.Println("Event received:", event.Name, event.Data)
 	})
 	person := schema.Person{
 		Name:       "Aloha",
